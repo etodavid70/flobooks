@@ -22,6 +22,27 @@ def signup(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+#in actual fact this will require a csrf token
+@csrf_exempt
+@api_view(['GET'])
+def getUser(request):
+    if request.method == 'GET':
+        #This gets the email from the request body
+        email = request.data.get('email')
+        print(email)  # Assuming email is passed as a query parameter
+        if email:
+            try:
+                user = CustomUser.objects.get(email=email)
+                serializer = CustomUserSerializer(user)
+                return JsonResponse(serializer.data)
+            except CustomUser.DoesNotExist:
+                return JsonResponse({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'Email parameter is missing'}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
 #GET reequest
 #to return all the data
 class CustomUserListCreate(generics.ListCreateAPIView):
@@ -51,7 +72,7 @@ class GetUserByEmail(APIView):
 
 #using django rest framework
 class GetUserByEmail2(generics.RetrieveAPIView):
-    serializer_class = CustomUserSerializer
+    serializer_class = CustomUserSerializer()
     lookup_field = 'email'
 
     def get_queryset(self):

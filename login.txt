@@ -3,3 +3,15 @@ login for python anywhere
 username: flobooks
 email: davideto43@gmail.com
 password: same
+
+
+login for admin section
+
+flobooks@gmail.com
+davideto43@gmail.com
+
+
+1234
+
+
+11:58 ~/.virtualenvs $ source flobooks-virtualenv/bin/activate
