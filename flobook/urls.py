@@ -15,14 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from onboarding.views import CustomUserListCreate, CustomUserRetrieveUpdateDestroy, GetUserByEmail, GetUserByEmail2, signup, getUser
+from django.urls import path, include
+from onboarding.views import CustomUserListCreate, CustomUserRetrieveUpdateDestroy, GetUserByEmail, GetUserByEmail2, signup, getUser, LoginView, login_view
 
 urlpatterns = [
    path('admin/', admin.site.urls),
 
    path('signup/', signup, name='signup'),
-   path('getuser/', getUser, name='getuser')
+     path('login/', login_view, name='login'),
+   path('getuser/', getUser, name='getuser'),
+   path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
+
+ 
     # path('users/', CustomUserListCreate.as_view(), name='user-list'),
     # path('users/<int:pk>/', CustomUserRetrieveUpdateDestroy.as_view(), name='user-detail'),
 

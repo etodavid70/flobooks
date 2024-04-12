@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'onboarding.apps.OnboardingConfig',
     'rest_framework',
+     'django_ledger',
+     'rest_framework.authtoken'
 
 ]
 
@@ -131,3 +133,14 @@ AUTH_USER_MODEL = 'onboarding.CustomUser'
 APPEND_SLASH = False
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # Add other authentication backends if needed
+]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
