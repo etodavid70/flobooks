@@ -50,5 +50,3 @@ class CustomUser(AbstractUser):
     
 
     
-
-    

@@ -30,9 +30,21 @@ void main() async {
     // Make a POST request to the Django API
     var response = await http.post(
       Uri.parse(apiUrl),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
+     headers: {
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip, deflate',
+            // 'Authorization': 'Bearer your_access_token',
+          'Content-Type': 'application/json',
+           'DNT': '1',
+           'Origin': '  "http://localhost:57188"',
+          //  'User-Agent': 'PostmanRuntime/7.37.0', 
+            
+          //  'Cache-Control': 'no-cache',
+          
+          //   'Host':  "http://localhost:57188", 
+            
+          //    'Connection': 'keep-alive'
+             },
       body: jsonBody,
     );
 

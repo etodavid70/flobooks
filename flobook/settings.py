@@ -24,6 +24,8 @@ SECRET_KEY = 'django-insecure-tpivf-5j2tx$bbvv%^te!fz15n6*$(ycd#jnf(0&le##vgrfq%
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ALLOWED_HOSTS = ['127.0.0.1', ]
 
@@ -40,11 +42,35 @@ INSTALLED_APPS = [
     'onboarding.apps.OnboardingConfig',
     'rest_framework',
      'django_ledger',
-     'rest_framework.authtoken'
+     'rest_framework.authtoken',
+     'corsheaders',
 
 ]
 
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    # 'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    # 'user-agent',
+    # 'x-csrftoken',
+    # 'x-requested-with',
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+# CORS_ALLOWED_ORIGINS = [
+
+#      "http://127.0.0.1:57188",
+#       "http://localhost:57188",
+# ]
+
+
 MIDDLEWARE = [
+   'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'flobook.urls'
