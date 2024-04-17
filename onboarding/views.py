@@ -23,7 +23,10 @@ def signup(request):
     serializer =  CustomUserSerializer(data=request.data)
     if serializer.is_valid():
         password = serializer.validated_data.get('password')
-        serializer.save()
+        user=serializer.save()
+        user.set_password(password)
+        user.save()
+
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -33,6 +36,34 @@ from rest_framework import serializers
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+
+
+
+
+class LoginView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+           
+            user = authenticate(request, email=email, password=password)
+            print(email, password, user)
+            
+            if user is not None:
+                login(request, user)
+                serializer = CustomUserSerializer(user)
+                token, _ = Token.objects.get_or_create(user=user)
+                return JsonResponse({'status': 'success', 'message': 'Authentication successful', 'data': {
+                    'Authtoken': token.key,
+                    'userdata': serializer.data
+                }}, status=status.HTTP_200_OK)
+            else:
+                return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 
@@ -128,46 +159,4 @@ class GetUserByEmail2(generics.RetrieveAPIView):
     def get_queryset(self):
         email = self.kwargs['email']
         return CustomUser.objects.filter(email=email)
-    
 
-
-class LoginView(APIView):
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-           
-            user = authenticate(request, username=email, password=password)
-            
-            if user is not None:
-                login(request, user)
-                return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-
-
-
-# @csrf_exempt
-# @api_view(['POST'])
-# def login_view1(request):
-#     if request.method == 'POST':
-#         serializer = LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data.get('email')
-#             password = serializer.validated_data.get('password')
-#             print(request.headers)
-#             user = authenticate(request, username=email, password=password)
-#             print(user)
-#             if user is not None:
-#                 token, _ = Token.objects.get_or_create(user=user)
-#                 return JsonResponse({'status': 'success', 'message': 'Authentication successful', 'token': token.key}, status=status.HTTP_200_OK)
-#             else:
-#                 return JsonResponse({'status': 'failed', 'error': 'Invalid login details'}, status=status.HTTP_401_UNAUTHORIZED)
-#         else:
-#             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     else:
-#         return JsonResponse({'status': 'failed', 'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

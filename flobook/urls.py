@@ -22,7 +22,7 @@ urlpatterns = [
    path('admin/', admin.site.urls),
 
    path('signup/', signup, name='signup'),
-     path('login/', login_view, name='login'),
+      path('login/', LoginView.as_view(), name='login'),
    path('getuser/', getUser, name='getuser'),
    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
 
