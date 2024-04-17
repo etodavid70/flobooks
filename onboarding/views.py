@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password, make_password
+     
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -37,34 +39,32 @@ class LoginSerializer(serializers.Serializer):
 
 
 
+
+ 
 @csrf_exempt
 @api_view(['POST'])
 def login_view(request):
-  if request.method == 'POST':
-    email = request.data.get('email')
-    
-    inputpassword = request.data.get('password')
-    # statuss= authenticate(request, username=email, password=inputpassword)
-    # print(statuss)
-    user= CustomUser.objects.get(email=	email)
-    
-    if inputpassword == user.password:
-        serializer = CustomUserSerializer(user)
-        token, _ = Token.objects.get_or_create(user=user)
-        # print(check_password(password, ))
-        return JsonResponse({'status': 'success', 'message': 'Authentication successful', 'data': {
-            'Authtoken': token.key,
-            'userdata': serializer.data
-
-        }}, status=status.HTTP_200_OK)
-    else:
-        # Password incorrect
-        return JsonResponse({'status': 'failed', 'error': 'Invalid login details'}, status=status.HTTP_401_UNAUTHORIZED)
-
-  else:
-      return JsonResponse({'status': 'failed', 'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-      
+    if request.method == 'POST':
+        email = request.data.get('email')
+        input_password = request.data.get('password')
+        
+        try:
+            user = CustomUser.objects.get(email=email)
+            
+            if input_password == user.password:
+                serializer = CustomUserSerializer(user)
+                token, _ = Token.objects.get_or_create(user=user)
+                return JsonResponse({'status': 'success', 'message': 'Authentication successful', 'data': {
+                    'Authtoken': token.key,
+                    'userdata': serializer.data
+                }}, status=status.HTTP_200_OK)
+            else:
+                # Password incorrect
+                return JsonResponse({'status': 'failed', 'error': 'Invalid login details!'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        except ObjectDoesNotExist:
+            # User does not exist
+            return JsonResponse({'status': 'failed', 'error': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
