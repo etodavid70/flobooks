@@ -65,6 +65,30 @@ class LoginView(APIView):
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
+@csrf_exempt
+def logout_view(request):
+    logout(request)
+
+    return JsonResponse({'message': 'User logged out!'})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -72,91 +96,3 @@ class LoginView(APIView):
 
 
  
-@csrf_exempt
-@api_view(['POST'])
-def login_view(request):
-    if request.method == 'POST':
-        email = request.data.get('email')
-        input_password = request.data.get('password')
-        
-        try:
-            user = CustomUser.objects.get(email=email)
-            
-            if input_password == user.password:
-                serializer = CustomUserSerializer(user)
-                token, _ = Token.objects.get_or_create(user=user)
-                return JsonResponse({'status': 'success', 'message': 'Authentication successful', 'data': {
-                    'Authtoken': token.key,
-                    'userdata': serializer.data
-                }}, status=status.HTTP_200_OK)
-            else:
-                # Password incorrect
-                return JsonResponse({'status': 'failed', 'error': 'Invalid login details!'}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        except ObjectDoesNotExist:
-            # User does not exist
-            return JsonResponse({'status': 'failed', 'error': 'User does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
-
-
-
-
-
-#in actual fact this will require a csrf token
-@csrf_exempt
-@api_view(['GET'])
-def getUser(request):
-    if request.method == 'GET':
-        #This gets the email from the request body
-        email = request.data.get('email')
-        print(email)  # Assuming email is passed as a query parameter
-        if email:
-            try:
-                user = CustomUser.objects.get(email=email)
-                serializer = CustomUserSerializer(user)
-                return JsonResponse(serializer.data)
-            except CustomUser.DoesNotExist:
-                return JsonResponse({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return JsonResponse({'message': 'Email parameter is missing'}, status=status.HTTP_404_NOT_FOUND)
-        
-
-
-
-
-#GET reequest
-#to return all the data
-class CustomUserListCreate(generics.ListCreateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-
-#GET request
-#to return individudal data
-class CustomUserRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-
-
-
-
-#using default django method
-class GetUserByEmail(APIView):
-    def get(self, request, email):
-        try:
-            user = CustomUser.objects.get(email=email)
-        except CustomUser.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = CustomUserSerializer(user)
-        return JsonResponse(serializer.data)
-
-
-#using django rest framework
-class GetUserByEmail2(generics.RetrieveAPIView):
-    serializer_class = CustomUserSerializer()
-    lookup_field = 'email'
-
-    def get_queryset(self):
-        email = self.kwargs['email']
-        return CustomUser.objects.filter(email=email)
-
