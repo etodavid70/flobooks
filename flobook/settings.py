@@ -22,10 +22,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-tpivf-5j2tx$bbvv%^te!fz15n6*$(ycd#jnf(0&le##vgrfq%'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'etodavid94@gmail.com'
+EMAIL_HOST_PASSWORD = 'davdydxemc2'
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = True
 
+# CORS_ALLOWED_ORIGINS = [
+#     'http://127.0.0.1:60006',
+# ]
 
 ALLOWED_HOSTS = ['127.0.0.1', ]
 
@@ -50,12 +61,12 @@ INSTALLED_APPS = [
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
-    # 'authorization',
+    'authorization',
     'content-type',
     'dnt',
     # 'origin',
     # 'user-agent',
-    # 'x-csrftoken',
+    'x-csrftoken',
     # 'x-requested-with',
 ]
 
@@ -70,6 +81,7 @@ CORS_ALLOW_HEADERS = [
 
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -166,8 +178,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+        'rest_framework.authentication.SessionAuthentication',  # Add if needed
+        # Other authentication classes...
+    ],
+    # Other DRF settings...
 }

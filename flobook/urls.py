@@ -16,16 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from onboarding.views import  signup, LoginView, logout_view
-
+from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken
 urlpatterns = [
    path('admin/', admin.site.urls),
-
+     path('gettoken/', getToken, name='gettoken'),
    path('signup/', signup, name='signup'),
       path('login/', LoginView.as_view(), name='login'),
       path('logout/', logout_view, name='logout'),
      
    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
+
+   path('sendmail/', send_email, name='sendemail'),
+   path('dashboardmetadata/', all_users_data, name='dashboard')
 
  
  
