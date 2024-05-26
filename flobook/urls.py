@@ -16,19 +16,35 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken
+from django.conf import settings
+from django.conf.urls.static import static
+from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken, BusinessLogoView
+from manageaccounts.views import ManageAccounts
+
+
+
 urlpatterns = [
    path('admin/', admin.site.urls),
      path('gettoken/', getToken, name='gettoken'),
    path('signup/', signup, name='signup'),
+
+
+   path ('uploadlogo/', BusinessLogoView.as_view(), name='uploadlogo'),
+#    path ('uploadlogo2/', upload_logo, name='uploadlogo'),
+   
+
       path('login/', LoginView.as_view(), name='login'),
       path('logout/', logout_view, name='logout'),
      
-   path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
+#    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
 
    path('sendmail/', send_email, name='sendemail'),
-   path('dashboardmetadata/', all_users_data, name='dashboard')
+   path('dashboardmetadata/', all_users_data, name='dashboard'),
+
+    path('manageaccounts/', ManageAccounts.as_view(), name='manageaccounts'),
+    #  path('manageaccounts/delete/<str:email>/', manageAccounts.as_view(), name='manageaccounts'),
+#    path('uploadlogo/',PhotoView.as_view({'get': 'list', 'post': 'create'}), name='uploadlogo')
 
  
  
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
 ls
 cd .virtualenvs/
-cd flobook-virtualenv/
+cd flobooks-virtualenv/
 source bin/activate

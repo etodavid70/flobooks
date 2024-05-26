@@ -1,0 +1,115 @@
+
+//to get the csrf token
+
+GET  http://127.0.0.1:8000/gettoken/
+Content-Type: application/json
+
+
+###
+
+//to signup
+
+POST http://127.0.0.1:8000/signup/
+Content-Type: application/json
+X-CSRFToken: v0qTvMl9u6PGIxniLWCRx7FQtZfysdKQiiLIfli9IHLznCAxYdqxnguW7PC2D0a0
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+{
+                      "password": "1234",
+                      "first_name": "ldfklj",
+                      "last_name": "eldnfl",
+                      "email": "test11@gmail.com",
+                      "country": "lkdjf",
+                      "state": "lkdjf",
+                      "phoneNumber": "lkdjf",
+                      "businessName": "lkdjf",
+                      "businessAddress": "lkdjf",
+                      "present_package": "lkdjf"
+                    }
+
+###
+
+//to log in
+
+POST http://127.0.0.1:8000/login/
+Content-Type: application/json
+X-CSRFToken: 2J9VPb9IOGIXzzG7Gz4Pj8vLfdkr3hnllO2Hj9MjEETVcY1nfGHqWU71lWyWiiRH
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+
+{  "password": "1234", "email": "davideto43@gmail.com"  }
+
+###
+
+POST  http://127.0.0.1:8000/logout/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+
+
+###
+
+GET http://127.0.0.1:8000/dashboardmetadata/
+Content-Type: application/json
+Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+
+###
+
+
+POST  http://127.0.0.1:8000/uploadlogo/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+
+{
+
+
+
+  "business_logo" :
+}
+
+###
+# create sub account
+
+
+
+POST http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+X-CSRFToken: at9sefuMEhoFDRUGIGTlLIPtaW9gliFZlIszWVnBFUHXx46r95tHqFUrmndGdpqj
+
+{
+"subuser_name" : "samklef",
+    "subuser_email": "email@email.com",
+    "subuser_password": "12345"
+
+}
+
+
+###
+
+# get all sub accounts
+GET  http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+
+###
+# edit an account
+PUT http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+{
+"email": "email@email.com",
+"newEmail":"samklef@sam.com",
+"newname": "sam me",
+"newPassword": "123456"
+
+}
+
+###
+# delete a subuser
+DELETE  http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+X-CSRFToken: WBU7F1FSQgdFllYNPEUT7qRUOPSTwaY47QdenHyHRTwXfyayg3ufMnWS0gWjohJo
+
+{
+"email": "email@email.com",
+}
