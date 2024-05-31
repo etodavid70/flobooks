@@ -63,11 +63,21 @@ class LoginView(APIView):
             if user is not None:
                 login(request, user)
                 serializer = CustomUserSerializer(user)
+                # get the user
+                user= CustomUser.objects.get(email=email)
+            #get his photo
+                photo= user.photo
+                print(type(photo.business_logo))
+
+                photo_serializers=PhotoSerializer(user)
                 token, _ = Token.objects.get_or_create(user=user)
-                return JsonResponse({'status': 'success', 'message': 'Authentication successful, user logged in', 'data': {
+
+                return Response({'status': 'success', 'message': 'Authentication successful, user logged in', 'data': {
                     'Authtoken': token.key,
-                    'user_email': serializer.data['email']
-                }}, status=status.HTTP_200_OK)
+                    'user_email': serializer.data['email'],
+                 "photo": photo_serializers.data['business_logo'],
+                   
+                }},  status=status.HTTP_200_OK)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
@@ -192,12 +202,12 @@ class BusinessLogoView(APIView):
             if serializer.is_valid():
                 serializer.validated_data['user'] = request.user
                 serializer.save()
-                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED, safe=False)
+                return JsonResponse({"data": serializer.data, "user": request.user.email}, status=status.HTTP_201_CREATED)
             else:
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST, safe=False)
 
         except IntegrityError:
-            return JsonResponse({"error": serializer.errors, "message": "This user has already uploaded a photo"}, status= status.HTTP_409_CONFLICT)
+            return JsonResponse({"error": serializer.errors, "message": "This user has already uploaded a photo", "user": request.user.email}, status= status.HTTP_409_CONFLICT)
 
     def get(self, request):
         try:
