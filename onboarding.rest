@@ -1,0 +1,150 @@
+
+//to get the csrf token
+
+GET  https://flobooks.pythonanywhere.com/gettoken/
+Content-Type: application/json
+
+
+###
+
+GET  http://127.0.0.1:8000/gettoken/
+Content-Type: application/json
+
+
+###
+
+//to signup
+
+POST https://flobooks.pythonanywhere.com/signup/
+Content-Type: application/json
+X-CSRFToken: 7KAsYGh1IP9UeSZsRowoqVXWC2fD6mUIMv77PqkSTNBMpA0FXsYw7vOYmb1zTN8M
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+{
+                      "password": "1234",
+                      "first_name": "ldfklj",
+                      "last_name": "eldnfl",
+                      "email": "test11@gmail.com",
+                      "country": "lkdjf",
+                      "state": "lkdjf",
+                      "phoneNumber": "lkdjf",
+                      "businessName": "lkdjf",
+                      "businessAddress": "lkdjf",
+                      "present_package": "lkdjf"
+                    }
+
+###
+
+//to signup
+
+POST http://127.0.0.1:8000/signup/
+Content-Type: application/json
+X-CSRFToken: zfwNEDPwbODQtGAQfbYxo6YwZOf1AwHArPw9aFEG7CiyVNFQcVeslmewGApBOXiT
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+{
+                      "password": "1234",
+                      "first_name": "ldfklj",
+                      "last_name": "eldnfl",
+                      "email": "test12@gmail.com",
+                      "country": "lkdjf",
+                      "state": "lkdjf",
+                      "phoneNumber": "lkdjf",
+                      "businessName": "lkdjf",
+                      "businessAddress": "lkdjf",
+                      "present_package": "lkdjf"
+                    }
+
+###
+
+//to log in
+
+POST https://flobooks.pythonanywhere.com/login/
+Content-Type: application/json
+X-CSRFToken: 8cVDjLOK1z7vykojM1e6yqEdDOyKpESMjreK1rHz2cqNsxA4dqOsdnJbPfCahLD6
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+
+{  "password": "1234", "email": "test11@gmail.com"  }
+
+###
+
+//to log in
+
+POST http://127.0.0.1:8000/login/
+Content-Type: application/json
+X-CSRFToken: zfwNEDPwbODQtGAQfbYxo6YwZOf1AwHArPw9aFEG7CiyVNFQcVeslmewGApBOXiT
+Referer: https://flobooks.pythonanywhere.com/signup/
+
+
+{  "password": "1234", "email": "test11@gmail.com"  }
+
+###
+
+
+
+POST  http://127.0.0.1:8000/jwtoken/refresh/
+Content-Type: application/json
+# X-CSRFToken: J7EXxNmkPVvOQLP53Gx87aRjIAJYsfmrIib35AK7MoHohQ0rXY0PrLAF2R54GI6
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MTc2MzcxLCJpYXQiOjE3MTgxNzYwNzEsImp0aSI6IjE1NTBkZDlhMDM4YjQzNzZhZWRjNDI5NjU4YmZkNmJjIiwidXNlcl9pZCI6MTl9.lsCZfTH31CR5BjXgMNjeej0Cd8vax5rDDgLJcapbWRc
+
+{"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxODMxMDYyMSwiaWF0IjoxNzE4MjI0MjIxLCJqdGkiOiI0MDg0OTAzNDQ3ZjQ0NGZhOWQ4MDAyYmI3OTg4Zjg5NSIsInVzZXJfaWQiOjE5fQ.ybVKA9dCIYKLhc-aRhc3aCmPBfZnM8VUcUAkM8jgalI"}
+
+
+
+###
+POST  https://flobooks.pythonanywhere.com/logout/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+
+
+###
+POST  http://127.0.0.1:8000/logout/
+Content-Type: application/json
+# X-CSRFToken: J7EXxNmkPVvOQLP53Gx87aRjIAJYsfmrIib35AK7MoHohQ0rXY0PrLAF2R54GI6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MTc2MzcxLCJpYXQiOjE3MTgxNzYwNzEsImp0aSI6IjE1NTBkZDlhMDM4YjQzNzZhZWRjNDI5NjU4YmZkNmJjIiwidXNlcl9pZCI6MTl9.lsCZfTH31CR5BjXgMNjeej0Cd8vax5rDDgLJcapbWRc
+
+
+###
+
+
+
+GET https://flobooks.pythonanywhere.com/dashboardmetadata/
+Content-Type: application/json
+Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+
+###
+
+
+GET http://127.0.0.1:8000/dashboardmetadata/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MjAzNjg5LCJpYXQiOjE3MTgyMDMzODksImp0aSI6ImVmM2Y5ZWNmOTY5MzQyOWI5MjhmYTkyYmI2MDUwN2E3IiwidXNlcl9pZCI6MTl9.1FhJG3gSF7l-r3G_xhF3y-dMNZc50tf-GjlEWMjy5xQ
+
+###
+
+
+POST  https://flobooks.pythonanywhere.com/uploadlogo/
+Content-Type: application/json
+X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
+
+{
+  "business_logo" :
+}
+
+# ###
+
+# POST https://flobooks.pythonanywhere.com/uploadlogo/
+# Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+# ----WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="photo"; filename="example.png"
+# Content-Type: image/png
+
+# [RAW PHOTO DATA HERE]
+# ----WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+###
+

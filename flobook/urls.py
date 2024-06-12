@@ -20,6 +20,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken, BusinessLogoView
 from manageaccounts.views import ManageAccounts
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 
 
 
@@ -42,9 +47,10 @@ urlpatterns = [
    path('dashboardmetadata/', all_users_data, name='dashboard'),
 
     path('manageaccounts/', ManageAccounts.as_view(), name='manageaccounts'),
-    #  path('manageaccounts/delete/<str:email>/', manageAccounts.as_view(), name='manageaccounts'),
+  
 #    path('uploadlogo/',PhotoView.as_view({'get': 'list', 'post': 'create'}), name='uploadlogo')
-
+ path('jwtoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('jwtoken/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
  
  
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

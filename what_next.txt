@@ -1,0 +1,1 @@
+use json web tokens for all view functions

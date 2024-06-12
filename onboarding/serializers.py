@@ -7,6 +7,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
+        extra_kwargs = {
+            'password': {'write_only': True}  # Password is write-only(displayed)
+        }
 
 
 

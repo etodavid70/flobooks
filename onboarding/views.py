@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
 from django.utils.decorators import method_decorator
 
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt,  csrf_protect, ensure_csrf_cookie
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import generics
@@ -27,6 +27,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from django.middleware.csrf import get_token
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+
 
 @csrf_exempt
 def getToken(request):
@@ -34,7 +38,7 @@ def getToken(request):
     # print("CSRF Token:", csrf_token)
     return JsonResponse({"csrf token": csrf_token})
 
-@csrf_exempt
+
 @api_view(['POST'])
 def signup(request):
     serializer =  CustomUserSerializer(data=request.data)
@@ -44,14 +48,18 @@ def signup(request):
         user.set_password(password)
         user.save()
 
-        return JsonResponse({'email': serializer.data['email']}, status=status.HTTP_201_CREATED)
+        return JsonResponse({'email': serializer.data['email'], "message":"user created successfully "}, status=status.HTTP_201_CREATED)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+
 class LoginView(APIView):
+   
+    @method_decorator(csrf_protect)
+  
     def post(self, request):
+        # user= request.user
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
@@ -63,17 +71,16 @@ class LoginView(APIView):
             if user is not None:
                 login(request, user)
                 serializer = CustomUserSerializer(user)
-                # get the user
-                user= CustomUser.objects.get(email=email)
-            #get his photo
-                photo= user.photo
-                print(type(photo.business_logo))
+            
 
                 photo_serializers=PhotoSerializer(user)
-                token, _ = Token.objects.get_or_create(user=user)
+               
+                jwToken = RefreshToken.for_user(user)
 
                 return Response({'status': 'success', 'message': 'Authentication successful, user logged in', 'data': {
-                    'Authtoken': token.key,
+                  
+                    "jwRefreshToken":  str(jwToken),
+                    'jwToken': str(jwToken.access_token),
                     'user_email': serializer.data['email'],
                  "photo": photo_serializers.data['business_logo'],
                    
@@ -83,18 +90,15 @@ class LoginView(APIView):
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-@csrf_exempt
+@csrf_protect
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-        return JsonResponse({'message': 'User logged out!'})
+    
+    logout(request)
+    return JsonResponse({'message': 'User logged out!'}, status= status.HTTP_200_OK)
 
-    else:
-        return JsonResponse({'message': 'forbiddden'}, status=status.HTTP_403_FORBIDDEN)
-
+    
 
 
 
@@ -102,17 +106,15 @@ def logout_view(request):
  
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def all_users_data(request):
 
     #this is repetition the isAuthenticated decorator handles this already
     if request.user.is_authenticated:
         #get the email
-        user_email = request.user.email
-        #query the database with this email
-        user = CustomUser.objects.get(email=user_email)
-
+        user = request.user
+        
         #serialize the queried data
         serializer = CustomUserSerializer(user)
 

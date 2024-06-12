@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'onboarding.apps.OnboardingConfig',
 'manageaccounts.apps.ManageaccountsConfig',
     'rest_framework',
+    'rest_framework_simplejwt',
+
     #  'django_ledger',
      'rest_framework.authtoken',
      'corsheaders',
@@ -184,9 +186,10 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # Add if needed
-        # Other authentication classes...
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+         
     ],
     # Other DRF settings...
 }
