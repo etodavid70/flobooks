@@ -78,9 +78,9 @@ class LoginView(APIView):
                 jwToken = RefreshToken.for_user(user)
 
                 return Response({'status': 'success', 'message': 'Authentication successful, user logged in', 'data': {
-                  
+                    'jwAccessToken': str(jwToken.access_token),
                     "jwRefreshToken":  str(jwToken),
-                    'jwToken': str(jwToken.access_token),
+                  
                     'user_email': serializer.data['email'],
                  "photo": photo_serializers.data['business_logo'],
                    
