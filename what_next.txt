@@ -1,1 +1,18 @@
 use json web tokens for all view functions
+
+how do i ensure that a logged in yser does not delete a subuser in another account
+right now, from the frontend he can only select users that are displayed from the backend
+
+since there is no input field, he cannot do that from frontend
+
+programmatically, if you pass the user email, into the api, the frontend engineer or anyone with the api can do it.
+
+to curb this we implement a logic
+
+
+where 
+if subuser is not a subuser of baseuser
+you cannot delete
+
+this is done already in the delete api,
+but not the update(put) api

@@ -1,0 +1,138 @@
+GET  http://127.0.0.1:8000/gettoken/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MjI0ODc2LCJpYXQiOjE3MTgyMjQyMjEsImp0aSI6IjliMzA4Y2RiNzljMDQzNjhiZTQzNDZhMTM1M2I2MzJkIiwidXNlcl9pZCI6MTl9.q6rRj8TLar4Vdpt5N5FlKRf4e9QNdc4_A9W42fn4y4E
+###
+
+# to get csrf token
+GET  https://flobooks.pythonanywhere.com/gettoken/
+Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MjI0ODc2LCJpYXQiOjE3MTgyMjQyMjEsImp0aSI6IjliMzA4Y2RiNzljMDQzNjhiZTQzNDZhMTM1M2I2MzJkIiwidXNlcl9pZCI6MTl9.q6rRj8TLar4Vdpt5N5FlKRf4e9QNdc4_A9W42fn4y4E
+###
+
+POST  http://127.0.0.1:8000/jwtoken/refresh/
+Content-Type: application/json
+
+{"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxOTk3OTA0NywiaWF0IjoxNzE5ODkyNjQ3LCJqdGkiOiI5OWY3ZDliMmFhMzE0NWJiODAyNzgwNDczNzEzNTgwMyIsInVzZXJfaWQiOjE5fQ.7IOau4F1i3ln80ezwIx7IXpdoulJBc23cUtDqQKwRcc"}
+
+###
+
+# to get new token
+POST  https://flobooks.pythonanywhere.com/jwtoken/refresh/
+Content-Type: application/json
+
+{"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxODcyNzEwNSwiaWF0IjoxNzE4NjQwNzA1LCJqdGkiOiIyMWEyYmIyNDBkOWE0ZWM0OWM2MTYzOGRlNmFlYTUwNiIsInVzZXJfaWQiOjY0fQ.czMhsb1w6pIaKZCk6Rfu7UEJ11ATLIQ-7BfaLtSSTvg"}
+
+###
+
+GET  http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4Mzc5ODYzLCJpYXQiOjE3MTgzNzgwNjMsImp0aSI6ImNkZDE1Y2I2NjNlNTQ2MzJhZDc4MWM2M2JhYTI3OTgwIiwidXNlcl9pZCI6NjR9.dmM_8cIagBvQhqLv-yjKbiN-NY3VkCV-95szm2qbKSQ
+
+###
+
+# to get all users
+GET  https://flobooks.pythonanywhere.com/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQzMDQwLCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6IjMzMDI4MTNlNjc5NjRhMDZhOGZkNzFjOTI5ZWZmMjk0IiwidXNlcl9pZCI6NjR9.gDOUQ7cADeuSx3kbkXHrEmrvv3_SyiJB7iYhxT_Sw5I
+
+###
+
+
+POST http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MjY4MTI2LCJpYXQiOjE3MTgyMjQyMjEsImp0aSI6ImRkZDI5YzdmMjg4NDQ5ZmY5OGQwYjUyNzk3ODNiMzA4IiwidXNlcl9pZCI6MTl9.hw_oj99jbkBo46sga6GSQJ1xxtpaN4-64EI7uGzycWo
+X-CSRFToken: j89qPxyOFi6tWY2eTXGI2Pok8oB7WTvlhUW2aUOWx9OBCMHDNsTohxlAwwo44QXS
+
+{
+"subuser_name" : "eto david",
+  "subuser_email": "etodavid9@email.com",
+  "subuser_password": "12345"
+}
+###
+
+
+# to add a new user
+POST https://flobooks.pythonanywhere.com/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQyNTA1LCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6IjU2Y2ViY2QwNjA3ZDRiODg4ZTMyZjUzNzk0NDYyNTBlIiwidXNlcl9pZCI6NjR9.z-r6XhweL92PTquA75NFeeUlHBhZMR_yndjUirnVHic
+X-CSRFToken: L2oJFPuRKPwv0jECETUZnofN5hkHyZ5Rju9GUxexKE5iz1cFXaRJancEinW3pC4S
+Referer: https://flobooks.pythonanywhere.com/
+
+{
+"subuser_name" : "eto david2",
+  "subuser_email": "etodavid13@email.com",
+  "subuser_password": "12345"
+}
+###
+
+
+PUT http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4MjY4MTI2LCJpYXQiOjE3MTgyMjQyMjEsImp0aSI6ImRkZDI5YzdmMjg4NDQ5ZmY5OGQwYjUyNzk3ODNiMzA4IiwidXNlcl9pZCI6MTl9.hw_oj99jbkBo46sga6GSQJ1xxtpaN4-64EI7uGzycWo
+X-CSRFToken: dXT4dkPbJd6Kd7FloGYuScLSvcxqFa8r81DeasHxs1SlSqPNMQL4l3yLMvMhYD30
+
+{
+"subuser_email": "etodavid9@email.com",
+"subuser_name":"changed changed",
+"subuser_password":"changed"
+}
+
+###
+
+# to edit a user
+PUT https://flobooks.pythonanywhere.com/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQyNTA1LCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6IjU2Y2ViY2QwNjA3ZDRiODg4ZTMyZjUzNzk0NDYyNTBlIiwidXNlcl9pZCI6NjR9.z-r6XhweL92PTquA75NFeeUlHBhZMR_yndjUirnVHic
+X-CSRFToken: vubGtDgNNcuI5AaIEGLm5GlJ3XRGiVuT3WWDIl0tN13vEiILXXI6SFiAg3t29ytU
+Referer: https://flobooks.pythonanywhere.com/
+
+{
+"subuser_email": "etodavid13@email.com",
+"subuser_name":"changed user",
+"subuser_password":"changed"
+}
+
+###
+
+DELETE  http://127.0.0.1:8000/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4Njg2MTI5LCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6ImVhY2E0NThhY2FlYTQ2MDQ4YTUyOGFhY2MxMmYwOGNhIiwidXNlcl9pZCI6NjR9.4Qy4oYm73L7Yoe-aQEyFgkoRnh_ErTwKeIRycEJFaYc
+X-CSRFToken: gWp4Ktcqd3imkAb0k2rsyJHCeU6u3corJIsY3dawahq5H7Zr0oQTzWWYN0qrANgX
+
+{
+"email": "etodavid8@email.com",
+"base_user": "test11@gmail.com"
+
+}
+
+###
+
+
+# to delete a user
+DELETE  https://flobooks.pythonanywhere.com/manageaccounts/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4Njg4MjgyLCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6ImJjYjU1ZjYyNThmODRjZDQ4NDc4ZTI1ZjUwYTdhNDczIiwidXNlcl9pZCI6NjR9.0HS7kskGmkfvpGSJipeuNGe_Pei4v4HyEVM699-qV3Y
+X-CSRFToken: 3kwSD8dQYdBPWffjoxoDTzGlCr3nHrs4BMhPSQXwY2aCvXNmHOlnGyDcPxFJy4r5
+Referer: https://flobooks.pythonanywhere.com/
+
+{
+
+    "email": "etodavid10@email.com",
+    "base_user": "test11@gmail.com"
+
+}
+
+
+
+
+# call api
+# if 401
+# take refresh token
+# then call refreshtoken api   with refresh token
+#  get new token
+
+# save new token
+
+# call api again
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQyNTA1LCJpYXQiOjE3MTg2NDA3MDUsImp0aSI6IjU2Y2ViY2QwNjA3ZDRiODg4ZTMyZjUzNzk0NDYyNTBlIiwidXNlcl9pZCI6NjR9.z-r6XhweL92PTquA75NFeeUlHBhZMR_yndjUirnVHic

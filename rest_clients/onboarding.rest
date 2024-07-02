@@ -17,7 +17,7 @@ Content-Type: application/json
 
 POST https://flobooks.pythonanywhere.com/signup/
 Content-Type: application/json
-X-CSRFToken: 7KAsYGh1IP9UeSZsRowoqVXWC2fD6mUIMv77PqkSTNBMpA0FXsYw7vOYmb1zTN8M
+X-CSRFToken: Y24k4PapIGaosGx2zNllbuBrMpkcI1VDl0crkgX3kfSXQQ9eHoBblyYGilgCtBY6
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 {
@@ -39,7 +39,7 @@ Referer: https://flobooks.pythonanywhere.com/signup/
 
 POST http://127.0.0.1:8000/signup/
 Content-Type: application/json
-X-CSRFToken: zfwNEDPwbODQtGAQfbYxo6YwZOf1AwHArPw9aFEG7CiyVNFQcVeslmewGApBOXiT
+X-CSRFToken: e6DKJV9UweJkwbt9GvdjoiFfsBvVenuaB4LRZmWy8NrTUl5lO6t9ym2uYxrlZXxD
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 {
@@ -61,7 +61,7 @@ Referer: https://flobooks.pythonanywhere.com/signup/
 
 POST https://flobooks.pythonanywhere.com/login/
 Content-Type: application/json
-X-CSRFToken: 8cVDjLOK1z7vykojM1e6yqEdDOyKpESMjreK1rHz2cqNsxA4dqOsdnJbPfCahLD6
+X-CSRFToken: nAz7ANVsQq4M4PSMUeYWN0XWpqiGkUkhIoasF3PqFkPXEn6uue7xwozA1mcEdZyE
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 
@@ -73,7 +73,7 @@ Referer: https://flobooks.pythonanywhere.com/signup/
 
 POST http://127.0.0.1:8000/login/
 Content-Type: application/json
-X-CSRFToken: zfwNEDPwbODQtGAQfbYxo6YwZOf1AwHArPw9aFEG7CiyVNFQcVeslmewGApBOXiT
+X-CSRFToken: 14C2jsgJog1raExge6pS3kATgrwyK8ztcDTDxa51FvaGJay11ZENCwFj1WcJuf06
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 
@@ -96,7 +96,7 @@ Content-Type: application/json
 POST  https://flobooks.pythonanywhere.com/logout/
 Content-Type: application/json
 X-CSRFToken: kRLxAwDSECJFIBPqVnILhmb2FWvAc6f0HPTEQXqwgbre6LrC3YYBrqyhbSr0XGit
-Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQ0MTYwLCJpYXQiOjE3MTg2NDIzNjAsImp0aSI6ImQzODE0MTliYzNlMzRiMWI5YzQ0NTc1ODJlMDNiOGYzIiwidXNlcl9pZCI6MTl9.CC6hXKskES1PaqS49RvG7BgKLY4z7ogZNHhRnK_LcD8
 
 
 ###
@@ -112,7 +112,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET https://flobooks.pythonanywhere.com/dashboardmetadata/
 Content-Type: application/json
-Authorization: Token 023396310e2eb314a297f08ccc5ff7237bb7ea3a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE4NjQ0MTYwLCJpYXQiOjE3MTg2NDIzNjAsImp0aSI6ImQzODE0MTliYzNlMzRiMWI5YzQ0NTc1ODJlMDNiOGYzIiwidXNlcl9pZCI6MTl9.CC6hXKskES1PaqS49RvG7BgKLY4z7ogZNHhRnK_LcD8
 
 ###
 

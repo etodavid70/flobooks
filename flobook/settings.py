@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     #  'django_ledger',
      'rest_framework.authtoken',
      'corsheaders',
+     "sales.apps.SalesConfig"
 
 ]
 

@@ -51,6 +51,11 @@ urlpatterns = [
 #    path('uploadlogo/',PhotoView.as_view({'get': 'list', 'post': 'create'}), name='uploadlogo')
  path('jwtoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwtoken/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+
+#sales urls
  
+ path('sales/', include('sales.urls')), 
+
  
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

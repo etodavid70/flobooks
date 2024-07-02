@@ -86,14 +86,16 @@ class ManageAccounts (APIView):
     # def delete (self, request, email):
     @method_decorator(csrf_protect)
     def delete (self, request):
-        email= request.data["email"]
+        subUserEmail= request.data["email"]
+        baseUserEmail=request.data["base_user"]
+        
         try:
 
-            base_user_email= request.user.email
+            # base_user_email= request.user.email
             #get the base user
-            base_user =CustomUser.objects.get(email=base_user_email)
+            base_user =CustomUser.objects.get(email=baseUserEmail)
            #get the sub user
-            sub_user=base_user.sub_users.get(subuser_email=email)
+            sub_user=base_user.sub_users.get(subuser_email=subUserEmail)
            
            #delete the sub user
                
