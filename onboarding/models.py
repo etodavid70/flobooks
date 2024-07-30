@@ -20,6 +20,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
@@ -30,7 +31,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    
+
      # to Remove the username field
     username = None
     email = models.EmailField(unique=True)
@@ -42,29 +43,26 @@ class CustomUser(AbstractUser):
     phoneNumber=models.CharField(max_length=20)
     businessName = models.CharField(max_length=255)
     businessAddress = models.CharField(max_length=255)
-    present_package=models.CharField(max_length=20)
+    PACKAGE_CHOICES = [
+    ('bronze', 'Bronze'),
+    ('gold', 'Gold'),
+    ('platinum', 'Platinum'),
+    ('diamond', 'Diamond'),
+            ]
+    present_package = models.CharField(
+    max_length=20,
+    choices=PACKAGE_CHOICES,
+    default='bronze',
+    )
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = []
-    
 
-    
 class UserPhoto(models.Model):
-    user = models.OneToOneField( CustomUser, on_delete=models.CASCADE, related_name="photo")
+    user = models.OneToOneField( CustomUser, on_delete=models.CASCADE)
     business_logo= models.ImageField(upload_to="onboarding\profile_photos", null=True, blank=True)
 
     def __str__(self):
-        return self.user
+        return self.user.email
 
 
-# class Subuser(models.Model):
-#     base_user= models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="sub_users")
-
-#     #remove this default in production
-#     subuser_name= models.CharField(max_length=40, default=" "  )
-#     subuser_email= models.EmailField( unique=True)
-#     subuser_password= models.CharField(max_length=25)
-    
-
-#     def __str__(self):
-#         return self.subuser_name

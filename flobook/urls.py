@@ -25,6 +25,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from manageaccounts.views import PackageUpdateView
 
 
 
@@ -36,26 +37,25 @@ urlpatterns = [
 
    path ('uploadlogo/', BusinessLogoView.as_view(), name='uploadlogo'),
 #    path ('uploadlogo2/', upload_logo, name='uploadlogo'),
-   
+
 
       path('login/', LoginView.as_view(), name='login'),
       path('logout/', logout_view, name='logout'),
-     
+
 #    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
 
    path('sendmail/', send_email, name='sendemail'),
    path('dashboardmetadata/', all_users_data, name='dashboard'),
 
     path('manageaccounts/', ManageAccounts.as_view(), name='manageaccounts'),
-  
+    path('manageaccounts/update-package/', PackageUpdateView.as_view(), name='update-package'),
+
 #    path('uploadlogo/',PhotoView.as_view({'get': 'list', 'post': 'create'}), name='uploadlogo')
  path('jwtoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwtoken/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
+     path('sales/', include('sales.urls')),
+     path('subuser/', include("manageaccounts.urls")),
 
-#sales urls
- 
- path('sales/', include('sales.urls')), 
 
- 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

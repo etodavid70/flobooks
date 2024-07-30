@@ -16,3 +16,5 @@ you cannot delete
 
 this is done already in the delete api,
 but not the update(put) api
+
+i made changes to the user and subuser models

@@ -22,6 +22,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ###
 
+POST https://flobooks.pythonanywhere.com/sales/api/sales/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMDIyNjg4LCJpYXQiOjE3MjIwMTkwODgsImp0aSI6IjQxOGY5NTJlZjhmYjRlMDZhMmNkNzI2OGI5MDZmYzMzIiwidXNlcl9pZCI6ODF9.viQlhskAeNqvkktuDOD1pVN_ap65cdZyGzI4clAojTc
+
+{
+    "customer": 2,
+    "item": 2,
+    "amount": 100.00,
+    "quantity": 2,
+    "status": "P"
+}
+###
+
 
 POST http://127.0.0.1:8000/sales/api/items/
 Content-Type: application/json

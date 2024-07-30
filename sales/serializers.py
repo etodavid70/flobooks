@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Customer, Item, Sale, Invoice
+from .models import Customer, Item, Sale, Invoice, Accounts
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,3 +44,9 @@ class InvoiceSerializer(serializers.ModelSerializer):
         ret = super().to_representation(instance)
         ret.pop('user', None)
         return ret
+
+
+class AccountsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Accounts
+        fields = ['sales_id', 'cash_account', 'bank_account']

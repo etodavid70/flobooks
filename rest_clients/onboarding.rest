@@ -61,7 +61,7 @@ Referer: https://flobooks.pythonanywhere.com/signup/
 
 POST https://flobooks.pythonanywhere.com/login/
 Content-Type: application/json
-X-CSRFToken: nAz7ANVsQq4M4PSMUeYWN0XWpqiGkUkhIoasF3PqFkPXEn6uue7xwozA1mcEdZyE
+X-CSRFToken: yBRWYekmGGy1MelKEfW18YFaRmIVQS3NgcgQvP9ClgAFg8D59oCY3S9Nt2Mrxv4r
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 
@@ -73,7 +73,7 @@ Referer: https://flobooks.pythonanywhere.com/signup/
 
 POST http://127.0.0.1:8000/login/
 Content-Type: application/json
-X-CSRFToken: 14C2jsgJog1raExge6pS3kATgrwyK8ztcDTDxa51FvaGJay11ZENCwFj1WcJuf06
+X-CSRFToken: tFPxp882I1NGKcF9aE6tbJrpqciDZ81AP8szuY55KNij5owjJsv0edTBIGJXWRKX
 Referer: https://flobooks.pythonanywhere.com/signup/
 
 

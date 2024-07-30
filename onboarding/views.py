@@ -21,7 +21,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
-     
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import serializers
@@ -55,55 +55,55 @@ def signup(request):
 
 
 class LoginView(APIView):
-   
-    @method_decorator(csrf_protect)
-  
+
+    # @method_decorator(csrf_protect)
+
     def post(self, request):
         # user= request.user
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             password = serializer.validated_data['password']
-           
+
             user = authenticate(request, email=email, password=password)
             # print(email, password, user)
-            
+
             if user is not None:
                 login(request, user)
                 serializer = CustomUserSerializer(user)
-            
+
 
                 photo_serializers=PhotoSerializer(user)
-               
+
                 jwToken = RefreshToken.for_user(user)
 
                 return Response({'status': 'success', 'message': 'Authentication successful, user logged in', 'data': {
                     'jwAccessToken': str(jwToken.access_token),
                     "jwRefreshToken":  str(jwToken),
-                  
+
                     'user_email': serializer.data['email'],
                  "photo": photo_serializers.data['business_logo'],
-                   
+
                 }},  status=status.HTTP_200_OK)
             else:
                 return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-@csrf_protect
+
+# @csrf_protect
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def logout_view(request):
-    
+
     logout(request)
     return JsonResponse({'message': 'User logged out!'}, status= status.HTTP_200_OK)
 
-    
 
 
 
 
- 
+
+
 
 @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
@@ -114,14 +114,14 @@ def all_users_data(request):
     if request.user.is_authenticated:
         #get the email
         user = request.user
-        
+
         #serialize the queried data
         serializer = CustomUserSerializer(user)
 
         #return the json of this data
-        
+
         return JsonResponse({'status': 'success', 'message': 'Authorization successful, users data fetched succesfully', 'data': {
-           
+
             'userData': serializer.data,
              'totalSales': '0',
             'totalPurchases': '0',
@@ -132,7 +132,7 @@ def all_users_data(request):
         return JsonResponse({"error": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
 
 from django.contrib.auth import logout
-    
+
 
 from django.core.mail import send_mail
 class SendMailSerializer(serializers.Serializer):
@@ -143,7 +143,7 @@ class SendMailSerializer(serializers.Serializer):
 def send_email(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-       
+
         send_mail(
             subject='Welcome to My Service! Please Confirm Your Email',
             # message=f'Click the link below to confirm your email address:\n{link}',
@@ -167,7 +167,7 @@ def send_email(request):
 
 
 
- 
+
 # @csrf_exempt
 # @api_view(['POST'])
 # # @permission_classes([IsAuthenticated])
@@ -177,7 +177,7 @@ def send_email(request):
 #         user= request.user.email
 #         serializer= PhotoSerializer(user, data=request.data)
 #         if serializer.is_valid():
-            
+
 #             serializer.save()
 #             return JsonResponse({'message':'sucessfully uploaded'}, status=status.HTTP_201_CREATED)
 
@@ -192,7 +192,7 @@ def send_email(request):
 from django.db import IntegrityError
 
 class BusinessLogoView(APIView):
- 
+
     parser_classes = (MultiPartParser, FormParser)
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -223,105 +223,11 @@ class BusinessLogoView(APIView):
                 serializers= PhotoSerializerSerializer(photo)
                 return JsonResponse({"message":"user photo successfully fetched", "photo": serializers.data}, status= status.HTTP_200_OK)
             else:
-                return JsonResponse({'error': "invalid user details"}, status= status.HTTP_400_BAD_REQUEST)  
-            
+                return JsonResponse({'error': "invalid user details"}, status= status.HTTP_400_BAD_REQUEST)
+
 
 
         except ObjectDoesNotExist:
             return JsonResponse({"error": serializers.errors, "message": "the user has not uploaded a photo"})
 
-
-import json
-
-# class manageAccounts (APIView):
-#     permission_classes = [IsAuthenticated]
-#     authentication_classes = [SessionAuthentication, TokenAuthentication]
-#     def post(self, request):
-#     #set the serializer
-#         serializer= SubuserSerializer(data=request.data)
-
-#         #if its valid
-#         if serializer.is_valid():
-#             #parse the associated user
-#             serializer.validated_data["base_user"]= request.user
-#             serializer.save()
-
-#             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED, safe=False)
-
-#         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST, safe=False)
-
-
-#     def get (self, request):
-
-#         try:
-
-#             # base_user_email= request.user.email
-#             # base_user =CustomUser.objects.get(email=base_user_email)
-#             # subuser=base_user.sub_users.all()
-
-#             # # print(type(subuser))
-#             # # serializer= SubuserSerializer(subuser)
-#             # all_subusers = []
-            
-        
-#             # for i in subuser:
-#             #     user=[]
-#             #     # print(f"{type(i.subuser_name)}, {type(i.subuser_email)}")
-                
-#             #     user.extend([i.subuser_name, i.subuser_email]) #add the name
-#             #     # user.append(i.subuser_email) # add the email
-#             #     all_subusers.append(user)     
-
-#             subusers = Subuser.objects.all()  # Retrieves all Subuser instances
-#             serializer = SubuserSerializer(subusers, many=True)
-#             # return JsonResponse({"message": "successfully fetched all users","all users": all_subusers}, status=status.HTTP_200_OK)
-#             return JsonResponse({"message": "successfully fetched all users","all users": serializer.data}, status=status.HTTP_200_OK)
-        
-#         except Subuser.DoesNotExist:
-#             return JsonResponse({"message": "no sub users registered on this account"}, status=status.HTTP_404_NOT_FOUND, safe=False)
-
-        
-
-#     # def delete (self, request, email):
-#     def delete (self, request):
-#         email= request.data["email"]
-#         try:
-
-#             base_user_email= request.user.email
-#             #get the base user
-#             base_user =CustomUser.objects.get(email=base_user_email)
-#            #get the sub user
-#             sub_user=base_user.sub_users.get(subuser_email=email)
-           
-#            #delete the sub user
-               
-#             sub_user.delete()
-#             return JsonResponse({"message": "user successfully removed"},status=status.HTTP_204_NO_CONTENT, safe=False)
-#             # else:
-#             #     return JsonResponse({"message": "user does not exist"},status=status.HTTP_404_NOT_FOUND)
-
-#         except Subuser.DoesNotExist:
-#             return JsonResponse({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND, safe=False)
-
-
-
-#     def put ( self, request):
-#         email = request.data.get('subuser_email')
-#         try:
-#             subuser = Subuser.objects.get(subuser_email= email)
-
-#             serializer= SubuserSerializer(subuser, data = request.data)
-#             if serializer.is_valid():
-#                 serializer.save()
-                    
-#                 return JsonResponse({"message": "successfully updated", "data": serializer.data}, status=status.HTTP_200_OK)
-            
-                
-#             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST, safe=False)
-
-#         except Subuser.DoesNotExist:
-#             return JsonResponse({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND, safe=False)
-
-        
-        
 

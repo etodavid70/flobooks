@@ -21,11 +21,12 @@ class Item(models.Model):
 
 
 class Sale(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    # customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.CharField(max_length=255)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField(default=5) 
+    quantity = models.PositiveIntegerField(default=5)
     STATUS_CHOICES = (
         ('P', 'Pending'),
         ('C', 'Completed'),
@@ -44,3 +45,13 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"Invoice for {self.sale.customer.name} on {self.date}"
+
+class Accounts(models.Model):
+
+    sales_id = models.ForeignKey(Sale, on_delete=models.CASCADE)
+    cash_account = models.JSONField()
+    bank_account = models.JSONField()
+
+    def __str__(self):
+        return self.sales_id
+
