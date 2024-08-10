@@ -24,11 +24,12 @@ class ItemSerializer(serializers.ModelSerializer):
 
 class SaleSerializer(serializers.ModelSerializer):
     item_name = serializers.CharField(source='item.name', read_only=True)
-    user_business_name = serializers.CharField(source='item.user.businessName', read_only=True)
+    unitPrice = serializers.CharField(source='item.price', read_only=True)
+    userBusinessName = serializers.CharField(source='item.user.businessName', read_only=True)
 
     class Meta:
         model = Sale
-        fields = ['id', 'customer', 'item', 'item_name', 'amount', 'quantity', 'date', 'status', 'user_business_name']
+        fields = ['id', 'customer', 'date', 'item', 'item_name',  'unitPrice', 'quantity', 'amount',  'status', "userBusinessName"]
 
 
 
@@ -74,7 +75,12 @@ class InvoiceSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['business_name'] = instance.sale.item.user.businessName
-        ret['item_name'] = instance.sale.item.name
+        ret['business_address'] = instance.sale.item.user.businessAddress
+        ret['business_phoneNumber'] = instance.sale.item.user.phoneNumber
+        ret['business_email'] = instance.sale.item.user.email
+
+        # ret['item_name'] = instance.sale.item.name
+        # ret['unit_price'] = instance.sale.item.price
         return ret
 
 class AccountsSerializer(serializers.ModelSerializer):

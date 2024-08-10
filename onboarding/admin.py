@@ -5,7 +5,8 @@ from onboarding.models import CustomUser
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display=['email', 'first_name', 'last_name', 'phoneNumber',"present_package",'country','state','businessName', ]
+    list_display=['email', 'phoneNumber','businessName', "businessAddress","present_package" ]
+    search_fields = ('email', 'phoneNumber', "businessName")
 
 
 

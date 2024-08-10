@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'onboarding.apps.OnboardingConfig',
+    "customersupport.apps.CustomersupportConfig",
         'manageaccounts.apps.ManageaccountsConfig',
     'rest_framework',
     'rest_framework_simplejwt',
