@@ -15,19 +15,47 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from onboarding.views import CustomUserListCreate, CustomUserRetrieveUpdateDestroy, GetUserByEmail, GetUserByEmail2, signup
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken, BusinessLogoView
+from manageaccounts.views import ManageAccounts
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from manageaccounts.views import PackageUpdateView
+
+
 
 urlpatterns = [
    path('admin/', admin.site.urls),
-
+     path('gettoken/', getToken, name='gettoken'),
    path('signup/', signup, name='signup'),
-    path('users/', CustomUserListCreate.as_view(), name='user-list'),
-    path('users/<int:pk>/', CustomUserRetrieveUpdateDestroy.as_view(), name='user-detail'),
 
-    #django method to get user by email
-    path('user/<str:email>/', GetUserByEmail.as_view(),  name='get-user-by-email'),
 
-    #django rest method
-    path('users/<str:email>/', GetUserByEmail2.as_view(), name='get-user-by-email'),
-]
+   path ('uploadlogo/', BusinessLogoView.as_view(), name='uploadlogo'),
+#    path ('uploadlogo2/', upload_logo, name='uploadlogo'),
+
+
+      path('login/', LoginView.as_view(), name='login'),
+      path('logout/', logout_view, name='logout'),
+
+#    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
+
+   path('sendmail/', send_email, name='sendemail'),
+   path('dashboardmetadata/', all_users_data, name='dashboard'),
+
+    path('manageaccounts/', ManageAccounts.as_view(), name='manageaccounts'),
+    path('manageaccounts/update-package/', PackageUpdateView.as_view(), name='update-package'),
+
+#    path('uploadlogo/',PhotoView.as_view({'get': 'list', 'post': 'create'}), name='uploadlogo')
+ path('jwtoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('jwtoken/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+     path('sales/', include('sales.urls')),
+     path('subuser/', include("manageaccounts.urls")),
+
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,7 +31,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    
+
      # to Remove the username field
     username = None
     email = models.EmailField(unique=True)
@@ -43,12 +43,26 @@ class CustomUser(AbstractUser):
     phoneNumber=models.CharField(max_length=20)
     businessName = models.CharField(max_length=255)
     businessAddress = models.CharField(max_length=255)
-    present_package=models.CharField(max_length=20)
+    PACKAGE_CHOICES = [
+    ('bronze', 'Bronze'),
+    ('gold', 'Gold'),
+    ('platinum', 'Platinum'),
+    ('diamond', 'Diamond'),
+            ]
+    present_package = models.CharField(
+    max_length=20,
+    choices=PACKAGE_CHOICES,
+    default='bronze',
+    )
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = []
-    
 
-    
+class UserPhoto(models.Model):
+    user = models.OneToOneField( CustomUser, on_delete=models.CASCADE)
+    business_logo= models.ImageField(upload_to="onboarding\profile_photos", null=True, blank=True)
 
-    
+    def __str__(self):
+        return self.user.email
+
+

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +24,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-tpivf-5j2tx$bbvv%^te!fz15n6*$(ycd#jnf(0&le##vgrfq%'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'etodavid94@gmail.com'
+EMAIL_HOST_PASSWORD = 'davdydxemc2'
 
-ALLOWED_HOSTS = []
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://127.0.0.1:60006',
+# ]
+
+ALLOWED_HOSTS = ['flobooks.pythonanywhere.com']
+# CSRF_TRUSTED_ORIGINS = ['*']
+
 
 
 # Application definition
@@ -38,18 +54,50 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'onboarding.apps.OnboardingConfig',
+        'manageaccounts.apps.ManageaccountsConfig',
     'rest_framework',
+    'rest_framework_simplejwt',
+    #  'django_ledger',
+     'rest_framework.authtoken',
+     'corsheaders',
+     "sales.apps.SalesConfig",
+      'rest_framework_simplejwt.token_blacklist',
 
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+     'authorization',
+    'content-type',
+    'dnt',
+    # 'origin',
+    # 'user-agent',
+    # 'x-csrftoken',
+    # 'x-requested-with',
+]
+
+
+
+# CORS_ALLOWED_ORIGINS = [
+
+#      "http://127.0.0.1:57188",
+#       "http://localhost:57188",
+# ]
+
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
+   'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'flobook.urls'
@@ -131,3 +179,26 @@ AUTH_USER_MODEL = 'onboarding.CustomUser'
 APPEND_SLASH = False
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # Add other authentication backends if needed
+]
+
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
+    # Other DRF settings...
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+     'TOKEN_BLACKLIST_ENABLED': True,
+    }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
