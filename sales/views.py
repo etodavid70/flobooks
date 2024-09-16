@@ -30,6 +30,7 @@ class SaleCreateView(generics.CreateAPIView):
 
 
     def perform_create(self, serializer):
+        user = self.request.user
         sale = serializer.save()
         item = sale.item
 
@@ -46,16 +47,32 @@ class SaleCreateView(generics.CreateAPIView):
 
         total_amount = sale.amount * sale.quantity
 
-        vat_percentage = Decimal('0.075')
+        vat_amount = Decimal('0.00')
 
-        # Calculate VAT (7.5% of total_amount)
-        vat_amount = vat_percentage * total_amount
 
-        vat_record, created = VAT.objects.get_or_create(id=1)  # assuming single record for VAT
-        vat_record.add_vat(vat_amount)
+
+
+        if user.start_tax:
+            vat_percentage = Decimal('0.075')
+
+            # Calculate VAT (7.5% of total_amount)
+            vat_amount = vat_percentage * total_amount
+
+            # Assuming a single VAT record
+            vat_record, created = VAT.objects.get_or_create(id=1)
+            vat_record.add_vat(vat_amount)
+
 
         Invoice.objects.create(sale=sale, total_amount=total_amount,
         status=sale.status)
+        # Store vat_amount in the serializer context so it can be returned in the response
+        self.vat_amount = vat_amount
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+            # Add VAT amount to the response
+        response.data['vat_amount'] = str(self.vat_amount)  # Convert Decimal to string
+        return response
 
 
 

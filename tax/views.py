@@ -6,11 +6,12 @@ from rest_framework.response import Response
 from rest_framework import generics
 from .models import VAT
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 # views.py
 from rest_framework import generics
 from .models import VAT
-from .serializers import VATSerializer
+from .serializers import VATSerializer, UserStateSerializer
 from rest_framework.response import Response
 from datetime import timedelta
 
@@ -49,20 +50,25 @@ class SetCommencementDateView(generics.UpdateAPIView):
 
     def post(self, request, *args, **kwargs):
         vat_record, created = VAT.objects.get_or_create(id=1)  # Assume single VAT record
-        commencement_date = request.data.get('commencement_date')
+        # commencement_date = request.data.get('commencement_date')
 
         # Use current date as default if not provided
-        if not commencement_date:
-            commencement_date = timezone.now()
+        # if not commencement_date:
+        commencement_date = timezone.now()
 
         try:
             # Make sure to import datetime module
-            vat_record.commencement_date = datetime.strptime(commencement_date, "%Y-%m-%d")
+            vat_record.commencement_date = commencement_date
         except ValueError:
             return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
 
         vat_record.save()
-        return Response({"message": "Commencement date set successfully."})
+
+        user = request.user
+        user.start_tax = True
+        user.save()
+
+        return Response({"message": "Commencement date set successfully and tax is now being calculated"})
 
 
 
@@ -79,5 +85,15 @@ class VATMarkAsPaidView(APIView):
         return Response({"error": "No VAT due or record not found."}, status=400)
 
 
+
+
+
+class UserStateView(APIView):
+    permission_classes = [IsAuthenticated]  # Only authenticated users can access this view
+
+    def get(self, request, *args, **kwargs):
+        user = request.user  # Get the currently authenticated user
+        serializer = UserStateSerializer(user)  # Serialize the user data
+        return Response(serializer.data)  # Return th
 
 # Create your views here.

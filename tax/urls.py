@@ -7,11 +7,13 @@ from django.urls import path
 
 # urls.py
 from django.urls import path
-from .views import VATRetrieveView, VATStatusView, VATMarkAsPaidView, SetCommencementDateView
+from .views import VATRetrieveView, VATStatusView, VATMarkAsPaidView, SetCommencementDateView,  UserStateView
+
 
 urlpatterns = [
       path('vat/', VATRetrieveView.as_view(), name='vat-detail'),
     path('vat/status/', VATStatusView.as_view(), name='vat-status'),
     path('vat/pay/', VATMarkAsPaidView.as_view(), name='vat-pay'),
     path('vat/commencement/', SetCommencementDateView.as_view(), name='vat-commencement'),
+    path('user/state/', UserStateView.as_view(), name='user-state'),
 ]
