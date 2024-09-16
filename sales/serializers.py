@@ -10,10 +10,11 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')  # Add this line
+    date_registered = serializers.ReadOnlyField()
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'price', "quantity","user"]
+        fields = ['id', "date_registered", 'name', 'price', "quantity", "user"]
 
 
 # class SaleSerializer(serializers.ModelSerializer):
@@ -27,9 +28,11 @@ class SaleSerializer(serializers.ModelSerializer):
     unitPrice = serializers.CharField(source='item.price', read_only=True)
     userBusinessName = serializers.CharField(source='item.user.businessName', read_only=True)
 
+
     class Meta:
         model = Sale
         fields = ['id', 'customer', 'date', 'item', 'item_name',  'unitPrice', 'quantity', 'amount',  'status', "userBusinessName"]
+
 
 
 
@@ -44,7 +47,7 @@ class InventorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'name', "quantity"]
+        fields = ['id', "date_registered", 'name', "quantity"]
 
     # def get_stock(self, obj):
     #     return obj.quantity

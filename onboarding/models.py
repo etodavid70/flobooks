@@ -43,6 +43,7 @@ class CustomUser(AbstractUser):
     phoneNumber=models.CharField(max_length=20)
     businessName = models.CharField(max_length=255)
     businessAddress = models.CharField(max_length=255)
+    start_tax = models.BooleanField(default=False)
     PACKAGE_CHOICES = [
     ('bronze', 'Bronze'),
     ('gold', 'Gold'),

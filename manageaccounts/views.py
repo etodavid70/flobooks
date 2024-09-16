@@ -137,6 +137,10 @@ class ManageAccounts (APIView):
            #get the sub user
             sub_user=base_user.sub_users.get(subuser_email=subUserEmail)
 
+            if sub_user.base_user != request.user:
+                return JsonResponse({"error": "You do not have permission to delete this subuser."},
+                                status=status.HTTP_403_FORBIDDEN, safe=False)
+
            #delete the sub user
 
             sub_user.delete()

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from onboarding.models import CustomUser
 
@@ -12,6 +13,7 @@ class Customer(models.Model):
         return self.name
 
 class Item(models.Model):
+    date_registered = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="item")  # Add this line
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)

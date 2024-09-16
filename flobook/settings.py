@@ -58,7 +58,8 @@ INSTALLED_APPS = [
         'manageaccounts.apps.ManageaccountsConfig',
     'rest_framework',
     'rest_framework_simplejwt',
-    #  'django_ledger',
+    "tax.apps.TaxConfig",
+
      'rest_framework.authtoken',
      'corsheaders',
      "sales.apps.SalesConfig",

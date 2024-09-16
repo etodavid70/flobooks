@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import SaleCreateView, InvoiceDetailView, ItemCreateView, CustomerCreateView, sales_accounts,purchase_accounts, InventoryListView, PurchaseCreateView
+from .views import ItemDetailView, ItemQueryView, UserSalesListView, UserPurchasesListView
 
 urlpatterns = [
     path('api/sales/', SaleCreateView.as_view(), name='sale_create'),
@@ -10,6 +11,10 @@ urlpatterns = [
      path('api/salesaccounts/', sales_accounts, name='sales_accounts'),
      path('api/purchaseaccounts/', purchase_accounts, name='purchase_accounts'),
     path('api/inventory/', InventoryListView.as_view(), name='inventory'),
+ path('api/products/<int:pk>/', ItemDetailView.as_view(), name='item-detail'),
+  path('api/product-query/', ItemQueryView.as_view(), name='item-query'),
+  path('api/all-sales/', UserSalesListView.as_view(), name='user-sales'),
+    path('api/all-purchases/', UserPurchasesListView.as_view(), name='user-purchases'),
 
 
 ]

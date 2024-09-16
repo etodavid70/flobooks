@@ -57,5 +57,6 @@ urlpatterns = [
      path('sales/', include('sales.urls')),
      path('subuser/', include("manageaccounts.urls")),
       path('support/', include("customersupport.urls")),
+      path('tax/', include("tax.urls")),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

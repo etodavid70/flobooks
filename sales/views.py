@@ -1,18 +1,26 @@
 from django.shortcuts import render
 from rest_framework import serializers
+from rest_framework.exceptions import NotFound
+
 
 # Create your views here.
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Sale, Invoice, Item, Customer, Purchase
+from tax.models import VAT
+
+from decimal import Decimal
+
 from .serializers import SaleSerializer, InvoiceSerializer, ItemSerializer, CustomerSerializer, AccountsSerializer, PurchaseSerializer
 from .serializers import InventorySerializer, AccountsSerializerPurchase
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
 from .permissions import IsBaseUserOrSubuser
+from decimal import Decimal
 
 
+#for sales
 
 class SaleCreateView(generics.CreateAPIView):
     queryset = Sale.objects.all()
@@ -36,9 +44,33 @@ class SaleCreateView(generics.CreateAPIView):
         # Save the updated item
         item.save()
 
-        Invoice.objects.create(sale=sale, total_amount=sale.amount * sale.quantity,
-        status=sale.status)  # Adjust total_amount calculation
+        total_amount = sale.amount * sale.quantity
 
+        vat_percentage = Decimal('0.075')
+
+        # Calculate VAT (7.5% of total_amount)
+        vat_amount = vat_percentage * total_amount
+
+        vat_record, created = VAT.objects.get_or_create(id=1)  # assuming single record for VAT
+        vat_record.add_vat(vat_amount)
+
+        Invoice.objects.create(sale=sale, total_amount=total_amount,
+        status=sale.status)
+
+
+
+class UserSalesListView(generics.ListAPIView):
+    serializer_class = SaleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the current user
+        user = self.request.user
+        # Filter sales by items owned by the current user
+        return Sale.objects.filter(item__user=user)
+
+
+#for purchases
 
 class PurchaseCreateView(generics.CreateAPIView):
     queryset = Purchase.objects.all()
@@ -60,23 +92,19 @@ class PurchaseCreateView(generics.CreateAPIView):
         # Save the updated item
         item.save()
 
-class InventoryListView(generics.ListAPIView):
-    serializer_class = InventorySerializer
-    permission_classes = [IsAuthenticated, IsBaseUserOrSubuser]
+
+class UserPurchasesListView(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # Get the current user
         user = self.request.user
-        return Item.objects.filter(user=user)
+        # Filter purchases by items owned by the current user
+        return Purchase.objects.filter(item__user=user)
 
-# class UserInventoryListView(generics.ListAPIView):
-#     serializer_class = InventorySerializer
-#     permission_classes = [IsAuthenticated]
 
-#     def get_queryset(self):
-#         user = self.request.user
-#         return Item.objects.filter(user=user)
-#
-
+#for invoice
 
 class InvoiceDetailView(generics.RetrieveAPIView):
     queryset = Invoice.objects.all()
@@ -94,6 +122,9 @@ class InvoiceDetailView(generics.RetrieveAPIView):
 #         serializer.save(user=self.request.user)
 
 # from rest_framework.response import Response
+
+
+# for items and inventory
 
 class ItemCreateView(generics.CreateAPIView):
     queryset = Item.objects.all()
@@ -113,6 +144,51 @@ class ItemCreateView(generics.CreateAPIView):
         response_data = response_serializer.data
         response_data.pop('user', None)  # Remove user from response data
         return JsonResponse(response_data, status=status.HTTP_201_CREATED, headers=headers, safe=False)
+
+
+
+class ItemDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated, IsBaseUserOrSubuser]
+
+    def get_queryset(self):
+        # Ensure that the user can only edit or delete their own items
+        return self.queryset.filter(user=self.request.user)
+
+    # def delete(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     self.perform_destroy(instance)
+    #     return Response({"detail": "Product deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+class InventoryListView(generics.ListAPIView):
+    serializer_class = InventorySerializer
+    permission_classes = [IsAuthenticated, IsBaseUserOrSubuser]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Item.objects.filter(user=user)
+
+
+class ItemQueryView(generics.GenericAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        item_id = request.query_params.get('id')
+        if not item_id:
+            return Response({"error": "ID query parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            item = Item.objects.get(pk=item_id, user=request.user)
+            serializer = self.get_serializer(item)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Item.DoesNotExist:
+            raise NotFound("Item not found.")
+
+
 
 
 
