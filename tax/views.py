@@ -15,7 +15,15 @@ from .serializers import VATSerializer, UserStateSerializer
 from rest_framework.response import Response
 from datetime import timedelta
 
+
+from django.http import JsonResponse
+from django.views import View
+
+from .state_urls import STATE_URLS
+
 class VATRetrieveView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = VAT.objects.all()
     serializer_class = VATSerializer
 
@@ -29,6 +37,8 @@ class VATRetrieveView(generics.RetrieveAPIView):
 
 
 class VATStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         vat_record = VAT.objects.first()  # Assuming single VAT record
         if vat_record:
@@ -46,6 +56,8 @@ class VATStatusView(APIView):
 
 
 class SetCommencementDateView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = VAT.objects.all()
 
     def post(self, request, *args, **kwargs):
@@ -73,6 +85,8 @@ class SetCommencementDateView(generics.UpdateAPIView):
 
 
 class VATMarkAsPaidView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         vat_record = VAT.objects.first()
         if vat_record and vat_record.vat_due:
@@ -97,3 +111,21 @@ class UserStateView(APIView):
         return Response(serializer.data)  # Return th
 
 # Create your views here.
+
+
+
+  # Import the dictionary of states
+
+class StateURLView(View):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Get the state from query parameters
+        state = request.GET.get('state', '').lower()
+
+        # Return the corresponding URL if the state exists
+        if state in STATE_URLS:
+            return JsonResponse({'state': state, 'e_payment_link': STATE_URLS[state]})
+        else:
+            return JsonResponse({'error': f'State not found {STATE_URLS}'}, status=404)
+

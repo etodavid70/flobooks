@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import generics
 from .models import CustomUser, UserPhoto
-from .serializers import CustomUserSerializer, PhotoSerializer, LoginSerializer
+from .serializers import CustomUserSerializer, PhotoSerializer, LoginSerializer,  UserProfileSerializer
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.models import Token
@@ -231,3 +231,13 @@ class BusinessLogoView(APIView):
             return JsonResponse({"error": serializers.errors, "message": "the user has not uploaded a photo"})
 
 
+
+
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # Return the currently authenticated user
+        return self.request.user

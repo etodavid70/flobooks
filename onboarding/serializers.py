@@ -26,3 +26,9 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model= UserPhoto
         fields =['user', 'business_logo']
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'country', 'state', 'phoneNumber', 'businessName', 'businessAddress']

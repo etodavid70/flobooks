@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken, BusinessLogoView
+from onboarding.views import  signup, LoginView, logout_view, send_email, all_users_data, logout_view, getToken, BusinessLogoView, UserProfileUpdateView
 from manageaccounts.views import ManageAccounts
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -58,5 +58,7 @@ urlpatterns = [
      path('subuser/', include("manageaccounts.urls")),
       path('support/', include("customersupport.urls")),
       path('tax/', include("tax.urls")),
+
+       path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
