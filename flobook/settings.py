@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'onboarding.apps.OnboardingConfig',
     "customersupport.apps.CustomersupportConfig",
         'manageaccounts.apps.ManageaccountsConfig',
+        "financial_report.apps.FinancialReportConfig",
     'rest_framework',
     'rest_framework_simplejwt',
     "tax.apps.TaxConfig",

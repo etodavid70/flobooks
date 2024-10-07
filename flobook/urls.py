@@ -58,6 +58,7 @@ urlpatterns = [
      path('subuser/', include("manageaccounts.urls")),
       path('support/', include("customersupport.urls")),
       path('tax/', include("tax.urls")),
+       path('financial_report/', include("financial_report.urls")),
 
        path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
 
