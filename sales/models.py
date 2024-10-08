@@ -65,14 +65,6 @@ class Purchase(models.Model):
         return f"{self.customer.name} - {self.item.name} - {self.date}"
 
 
-# class Invoice(models.Model):
-#     sale = models.OneToOneField(Sale, on_delete=models.CASCADE)
-#     date = models.DateTimeField(auto_now_add=True)
-#     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     status = models.CharField(max_length=6, choices=Sale.STATUS_CHOICES)
-
-#     def __str__(self):
-#         return f"Invoice for {self.sale.customer.name} on {self.date}"
 
 
 class Invoice(models.Model):
@@ -102,4 +94,25 @@ class AccountsPurchase(models.Model):
 
     def __str__(self):
         return self.purchase_id
+
+
+
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+
+class AccountsReceivable(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='accounts_receivable')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+
+    def __str__(self):
+        return f'{self.customer_name} owes {self.amount_due}'
+
+    def is_due(self):
+        """Returns whether the account is due for payment"""
+        return self.due_date <= timezone.now()
+
 

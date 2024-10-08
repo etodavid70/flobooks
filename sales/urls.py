@@ -1,9 +1,14 @@
 from django.urls import path
-from .views import SaleCreateView, InvoiceDetailView, ItemCreateView, CustomerCreateView, sales_accounts,purchase_accounts, InventoryListView, PurchaseCreateView
-from .views import ItemDetailView, ItemQueryView, UserSalesListView, UserPurchasesListView
+from .views import SaleCreateView, InvoiceDetailView, ItemCreateView, CustomerCreateView, sales_accounts,purchase_accounts, InventoryListView, PurchaseCreateView, SaleCreateCreditView
+from .views import ItemDetailView, ItemQueryView, UserSalesListView, UserPurchasesListView, CustomerDetailView
 
 urlpatterns = [
     path('api/sales/', SaleCreateView.as_view(), name='sale_create'),
+     path('api/sales-credit/', SaleCreateCreditView.as_view(), name='sale_credit'),
+
+     path('customers/', CustomerCreateView.as_view(), name='customer-create'),
+    path('customers/<int:pk>/', CustomerDetailView.as_view(), name='customer-detail'),
+
      path('api/purchase/', PurchaseCreateView.as_view(), name='purchase_create'),
     path('api/invoices/<int:sale__id>/', InvoiceDetailView.as_view(), name='invoice_detail'),
     path('api/items/', ItemCreateView.as_view(), name='item_create'),

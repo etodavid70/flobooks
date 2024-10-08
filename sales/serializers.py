@@ -4,8 +4,19 @@ from .models import Customer, Item, Sale, Invoice, Accounts, Purchase, AccountsP
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'phoneNumber', 'address']  # Include 'id' to make updates easier
 
+    def create(self, validated_data):
+        # Create a customer instance
+        return Customer.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        # Update the customer instance
+        instance.name = validated_data.get('name', instance.name)
+        instance.phoneNumber = validated_data.get('phoneNumber', instance.phoneNumber)
+        instance.address = validated_data.get('address', instance.address)
+        instance.save()
+        return instance
 
 
 class ItemSerializer(serializers.ModelSerializer):
