@@ -17,10 +17,18 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = ['id', "date_registered", 'name', 'price', "quantity", "user"]
 
 
+
+
+
 # class SaleSerializer(serializers.ModelSerializer):
+#     item_name = serializers.CharField(source='item.name', read_only=True)
+#     unitPrice = serializers.CharField(source='item.price', read_only=True)
+#     userBusinessName = serializers.CharField(source='item.user.businessName', read_only=True)
+
+
 #     class Meta:
 #         model = Sale
-#         fields = ['id', 'customer', 'item', 'amount', 'quantity', 'date', 'status']
+#         fields = ['id', 'customer', 'date', "item", 'item_name',  'unitPrice', 'quantity', 'amount',  'status', "userBusinessName"]
 
 
 class SaleSerializer(serializers.ModelSerializer):
@@ -31,8 +39,7 @@ class SaleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sale
-        fields = ['id', 'customer', 'date', 'item', 'item_name',  'unitPrice', 'quantity', 'amount',  'status', "userBusinessName"]
-
+        fields = ['id', 'customer', 'date', 'item_name',  'unitPrice', 'quantity',  'status', "userBusinessName"]
 
 
 
@@ -68,23 +75,45 @@ class InventorySerializer(serializers.ModelSerializer):
 #         return ret
 
 
+# class InvoiceSerializer(serializers.ModelSerializer):
+#     sale = SaleSerializer()
+
+#     class Meta:
+#         model = Invoice
+#         fields = ['id', 'sale', 'date', 'total_amount', 'status']
+
+#     def to_representation(self, instance):
+#         ret = super().to_representation(instance)
+#         ret['business_name'] = instance.sale.item.user.businessName
+#         ret['business_address'] = instance.sale.item.user.businessAddress
+#         ret['business_phoneNumber'] = instance.sale.item.user.phoneNumber
+#         ret['business_email'] = instance.sale.item.user.email
+
+#         # ret['item_name'] = instance.sale.item.name
+#         # ret['unit_price'] = instance.sale.item.price
+#         return ret
+
+
+
 class InvoiceSerializer(serializers.ModelSerializer):
-    sale = SaleSerializer()
+    sales = SaleSerializer(many=True)  # Many sales per invoice
 
     class Meta:
         model = Invoice
-        fields = ['id', 'sale', 'date', 'total_amount', 'status']
+        fields = ['id', 'sales', 'date', 'total_amount', 'status']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['business_name'] = instance.sale.item.user.businessName
-        ret['business_address'] = instance.sale.item.user.businessAddress
-        ret['business_phoneNumber'] = instance.sale.item.user.phoneNumber
-        ret['business_email'] = instance.sale.item.user.email
 
-        # ret['item_name'] = instance.sale.item.name
-        # ret['unit_price'] = instance.sale.item.price
+        # Since multiple sales belong to the same user, we can get the business info from the first sale's item user
+        first_sale = instance.sales.first()
+        ret['business_name'] = first_sale.item.user.businessName
+        ret['business_address'] = first_sale.item.user.businessAddress
+        ret['business_phoneNumber'] = first_sale.item.user.phoneNumber
+        ret['business_email'] = first_sale.item.user.email
+
         return ret
+
 
 class AccountsSerializer(serializers.ModelSerializer):
     class Meta:

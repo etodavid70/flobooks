@@ -8,6 +8,7 @@ class Customer(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="customer")
     name = models.CharField(max_length=255)
     phoneNumber=models.CharField(max_length=11, default="")
+    address= models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.name
@@ -64,14 +65,25 @@ class Purchase(models.Model):
         return f"{self.customer.name} - {self.item.name} - {self.date}"
 
 
+# class Invoice(models.Model):
+#     sale = models.OneToOneField(Sale, on_delete=models.CASCADE)
+#     date = models.DateTimeField(auto_now_add=True)
+#     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     status = models.CharField(max_length=6, choices=Sale.STATUS_CHOICES)
+
+#     def __str__(self):
+#         return f"Invoice for {self.sale.customer.name} on {self.date}"
+
+
 class Invoice(models.Model):
-    sale = models.OneToOneField(Sale, on_delete=models.CASCADE)
+    sales = models.ManyToManyField(Sale)  # Allow multiple sales per invoice
     date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=6, choices=Sale.STATUS_CHOICES)
 
     def __str__(self):
-        return f"Invoice for {self.sale.customer.name} on {self.date}"
+        return f"Invoice for {self.sales.first().customer} on {self.date}"  # Assuming all sales have the same customer
+
 
 class Accounts(models.Model):
 
