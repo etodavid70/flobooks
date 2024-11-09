@@ -65,7 +65,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Purchase
-        fields = ['id', 'item', 'amount', 'quantity', 'date', 'status', 'amount_paid_in_cash', 'amount_paid_to_bank']
+        fields = ['id', 'item', 'quantity', 'date', 'status', 'amount_paid_in_cash', 'amount_paid_to_bank']
 
     def create(self, validated_data):
         # Extract and remove 'amount_paid_in_cash' and 'amount_paid_to_bank' from validated_data
