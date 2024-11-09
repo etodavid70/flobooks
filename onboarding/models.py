@@ -61,7 +61,7 @@ class CustomUser(AbstractUser):
 
 class UserPhoto(models.Model):
     user = models.OneToOneField( CustomUser, on_delete=models.CASCADE)
-    business_logo= models.ImageField(upload_to="onboarding\profile_photos", null=True, blank=True)
+    business_logo= models.ImageField(upload_to="onboarding/profile_photos", null=True, blank=True)
 
     def __str__(self):
         return self.user.email

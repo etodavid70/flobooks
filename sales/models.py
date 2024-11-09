@@ -55,6 +55,7 @@ class Purchase(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=0)
+    dealers_name=models.CharField(default="", max_length= 120)
     STATUS_CHOICES = (
         ('Paid', 'P'),
         ('Credit', 'C'),
