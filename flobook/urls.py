@@ -30,22 +30,22 @@ from manageaccounts.views import PackageUpdateView
 
 
 urlpatterns = [
-   path('admin/', admin.site.urls),
+  path('admin/', admin.site.urls),
      path('gettoken/', getToken, name='gettoken'),
-   path('signup/', signup, name='signup'),
+  path('signup/', signup, name='signup'),
 
 
-   path ('uploadlogo/', BusinessLogoView.as_view(), name='uploadlogo'),
+  path ('uploadlogo/', BusinessLogoView.as_view(), name='uploadlogo'),
 #    path ('uploadlogo2/', upload_logo, name='uploadlogo'),
 
 
       path('login/', LoginView.as_view(), name='login'),
       path('logout/', logout_view, name='logout'),
 
-#    path('ledger/', include('django_ledger.urls', namespace='django_ledger')),
 
-   path('sendmail/', send_email, name='sendemail'),
-   path('dashboardmetadata/', all_users_data, name='dashboard'),
+
+  path('sendmail/', send_email, name='sendemail'),
+  path('dashboardmetadata/', all_users_data, name='dashboard'),
 
     path('manageaccounts/', ManageAccounts.as_view(), name='manageaccounts'),
     path('manageaccounts/update-package/', PackageUpdateView.as_view(), name='update-package'),
@@ -58,8 +58,8 @@ urlpatterns = [
      path('subuser/', include("manageaccounts.urls")),
       path('support/', include("customersupport.urls")),
       path('tax/', include("tax.urls")),
-       path('financial_report/', include("financial_report.urls")),
+      path('financial_report/', include("financial_report.urls")),
 
-       path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
+      path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

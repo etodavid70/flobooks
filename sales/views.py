@@ -18,8 +18,35 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
 from .permissions import IsBaseUserOrSubuser
 from decimal import Decimal
+from rest_framework.views import APIView
 
 
+class ItemNameIdView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def get(self, request):
+        # Fetch items assigned to the logged-in user
+        items = Item.objects.filter(user=request.user)
+
+        # Create a dictionary with item name as key and id as value
+        item_dict = {item.name: item.id for item in items}
+
+        # Return the dictionary as a JSON response
+        return Response(item_dict)
+
+class CustomerNameIdView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Fetch all customers
+        customers  = Customer.objects.filter(user=request.user)
+
+
+        # Create a dictionary with customer name as key and id as value
+        customer_dict = {customer.name: customer.id for customer in customers}
+
+        # Return the dictionary as a JSON response
+        return Response(customer_dict)
 
 class CustomerCreateView(generics.CreateAPIView):
     queryset = Customer.objects.all()
