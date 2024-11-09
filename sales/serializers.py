@@ -54,10 +54,30 @@ class SaleSerializer(serializers.ModelSerializer):
 
 
 
+# class PurchaseSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Purchase
+#         fields = ['id', 'item', 'amount', 'quantity', 'date', 'status']
+
 class PurchaseSerializer(serializers.ModelSerializer):
+    amount_paid_in_cash = serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+    amount_paid_to_bank = serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+
     class Meta:
         model = Purchase
-        fields = ['id', 'item', 'amount', 'quantity', 'date', 'status']
+        fields = ['id', 'item', 'amount', 'quantity', 'date', 'status', 'amount_paid_in_cash', 'amount_paid_to_bank']
+
+    def create(self, validated_data):
+        # Extract and remove 'amount_paid_in_cash' and 'amount_paid_to_bank' from validated_data
+        amount_paid_in_cash = validated_data.pop('amount_paid_in_cash', 0)
+        amount_paid_to_bank = validated_data.pop('amount_paid_to_bank', 0)
+        
+        # Calculate the total amount
+        validated_data['amount'] = amount_paid_in_cash + amount_paid_to_bank
+        
+        # Proceed with the usual create method
+        return super().create(validated_data)
+
 
 
 class InventorySerializer(serializers.ModelSerializer):

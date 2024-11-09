@@ -312,7 +312,7 @@ class PurchaseCreateView(generics.CreateAPIView):
 
 
 
-        # Decrease the item's quantity by the quantity sold
+       
         item.quantity += purchase.quantity
 
         # Save the updated item
