@@ -330,6 +330,9 @@ class UserPurchasesListView(generics.ListAPIView):
         return Purchase.objects.filter(item__user=user)
 
 
+
+
+
 #for invoice
 
 class InvoiceDetailView(generics.RetrieveAPIView):

@@ -73,6 +73,7 @@ class Invoice(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=6, choices=Sale.STATUS_CHOICES)
+    expected_amount=models.DecimalField(max_digits=10, decimal_places=2,default=0)
 
     def __str__(self):
         return f"Invoice for {self.sales.first().customer} on {self.date}"  # Assuming all sales have the same customer
