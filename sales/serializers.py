@@ -67,11 +67,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Purchase
-<<<<<<< HEAD
-        fields = ['id', 'item', 'quantity', 'date', 'status', 'amount_paid_in_cash', 'amount_paid_to_bank', "expected_amount", "balance_payable"]
-=======
         fields = ['id', 'item', 'quantity', 'date', "dealers_name",'status', 'amount_paid_in_cash', 'amount_paid_to_bank']
->>>>>>> 27c158ea5a8e960a961636eb1c3b792e8a1b4ade
 
     def create(self, validated_data):
         # Extract and remove 'amount_paid_in_cash' and 'amount_paid_to_bank' from validated_data
@@ -80,12 +76,6 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
         # Calculate the total amount
         validated_data['amount'] = amount_paid_in_cash + amount_paid_to_bank
-<<<<<<< HEAD
-        balance_payable=  validated_data['expected_amount']- validated_data['amount']
-        
-=======
-
->>>>>>> 27c158ea5a8e960a961636eb1c3b792e8a1b4ade
         # Proceed with the usual create method
         return super().create(validated_data)
 
