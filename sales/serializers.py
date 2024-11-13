@@ -65,10 +65,43 @@ class PurchaseSerializer(serializers.ModelSerializer):
     amount_paid_to_bank = serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
     balance_payable= serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     expected_amount=serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+    status = serializers.CharField(default='Paid', read_only=True)
 
     class Meta:
         model = Purchase
-        fields = ['id', 'item', 'quantity', 'date', "dealers_name",'status', 'amount_paid_in_cash', 'amount_paid_to_bank', "expected_amount", "balance_payable"]
+        fields = ['id', 'item', 'quantity', 'date', "dealers_name", 'amount_paid_in_cash', 'amount_paid_to_bank', "expected_amount"]
+
+    def create(self, validated_data):
+        # Extract and remove 'amount_paid_in_cash' and 'amount_paid_to_bank' from validated_data
+        amount_paid_in_cash = Decimal(validated_data.pop('amount_paid_in_cash', 0))
+        amount_paid_to_bank = Decimal(validated_data.pop('amount_paid_to_bank', 0))
+        expected_amount = Decimal(validated_data.pop('expected_amount', 0))
+
+        # Calculate the total amount
+        validated_data['amount'] = amount_paid_in_cash + amount_paid_to_bank
+
+
+        expected_amount =validated_data['amount']
+        balance_payable=0
+
+        # Proceed with the usual create method
+        return super().create(validated_data)
+        purchase.balance_payable = balance_payable
+        purchase.save()
+
+        return purchase
+
+
+class PurchaseCreditSerializer(serializers.ModelSerializer):
+    amount_paid_in_cash = serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+    amount_paid_to_bank = serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+   
+    expected_amount=serializers.DecimalField(max_digits=10, decimal_places=2, write_only=True)
+    status = serializers.CharField(default='Credit', read_only=True)
+
+    class Meta:
+        model = Purchase
+        fields = ['id', 'item', 'quantity', 'date', "dealers_name", 'amount_paid_in_cash', 'amount_paid_to_bank', "expected_amount", "balance_payable"]
 
     def create(self, validated_data):
         # Extract and remove 'amount_paid_in_cash' and 'amount_paid_to_bank' from validated_data

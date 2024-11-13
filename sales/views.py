@@ -11,7 +11,7 @@ from tax.models import VAT
 
 from decimal import Decimal
 
-from .serializers import SaleSerializer, InvoiceSerializer, ItemSerializer, CustomerSerializer, AccountsSerializer, PurchaseSerializer
+from .serializers import SaleSerializer, InvoiceSerializer, ItemSerializer, CustomerSerializer, AccountsSerializer, PurchaseSerializer,  PurchaseCreditSerializer
 from .serializers import InventorySerializer, AccountsSerializerPurchase
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
@@ -301,6 +301,27 @@ class UserSalesListView(generics.ListAPIView):
 class PurchaseCreateView(generics.CreateAPIView):
     queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
+
+    permission_classes = [IsAuthenticated, IsBaseUserOrSubuser]
+
+    def perform_create(self, serializer):
+        purchase = serializer.save()
+
+        item = purchase.item
+
+
+
+
+       
+        item.quantity += purchase.quantity
+
+        # Save the updated item
+        item.save()
+
+
+class PurchaseCreditView(generics.CreateAPIView):
+    queryset = Purchase.objects.all()
+    serializer_class = PurchaseCreditSerializer
 
     permission_classes = [IsAuthenticated, IsBaseUserOrSubuser]
 
